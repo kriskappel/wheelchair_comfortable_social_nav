@@ -1,0 +1,25 @@
+obstacle_range: 3.0
+raytrace_range: 3.5
+
+footprint: [[-0.7, -0.3], [-0.7, 0.3], [0.27, 0.3], [0.27, -0.3]]
+
+inflation_layer:
+  inflation_radius: 0.5
+  cost_scaling_factor: 10.0
+
+obstacle_layer:
+  # map_type: costmap
+  observation_sources: scan
+  scan: {sensor_frame: laser_joint, data_type: LaserScan, topic: scan, marking: true, clearing: true}
+
+comfort_layer:
+  # map_type: costmap
+  observation_sources: scan
+  scan: {sensor_frame: laser_joint, data_type: LaserScan, topic: scan, marking: true, clearing: true}
+
+# vision_layer:
+#   inflation_radius: 1.0
+#   cost_scaling_factor: 3.0
+
+# social_navigation_layer:
+#   amplitude: 17.0

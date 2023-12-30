@@ -1,0 +1,41 @@
+<launch>
+  
+  <!-- Map File -->
+  <arg name="map_file" default="$(find comfort_social_nav)/maps/map.yaml"/>
+  <!-- Initial Pose and Goal Publisher -->
+  <!-- Publish: /initialpose, /move_base_simple/goal -->
+  <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d /home/automaticaddison/catkin_ws/src/jetson_nano_bot/navigation_data_pub/maps/floorplan4.rviz">
+  </node>  -->
+
+  <!-- Subscribe: /initialpose, /move_base_simple/goal -->
+  <!-- Publish: /initial_2d, /goal_2d --> 
+  <!-- <node pkg="localization_data_pub" type="rviz_click_to_2d" name="rviz_click_to_2d">
+  </node> -->   
+
+  <!-- Map Server --> 
+  <!-- Publish: /map, /map_metadata -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)" />
+	
+  <!-- Add AMCL example for differential drive robots for Localization -->
+  <!-- Subscribe: /scan, /tf, /initialpose, /map -->
+  <!-- Publish: /amcl_pose, /particlecloud, /tf -->
+  <include file="$(find comfort_social_nav)/launch/amcl.launch"/>
+	
+  <!-- Move Base Node -->
+  <!-- Subscribe: /move_base_simple/goal -->
+  <!-- Publish: /cmd_vel -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <rosparam file="$(find comfort_social_nav)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find comfort_social_nav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find comfort_social_nav)/param/local_costmap_params.yaml" command="load"  />
+    <rosparam file="$(find comfort_social_nav)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find comfort_social_nav)/param/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find comfort_social_nav)/param/move_base_params.yaml" command="load" />
+    <rosparam file="$(find comfort_social_nav)/param/dwa_local_planner_params.yaml" command="load" />
+  </node>
+
+  <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find comfort_social_nav)/config/comfort_social_nav.rviz"/>
+
+
+</launch>
