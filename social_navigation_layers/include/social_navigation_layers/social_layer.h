@@ -7,6 +7,7 @@
 #include <people_msgs/People.h>
 #include <boost/thread.hpp>
 #include <list>
+#include <std_msgs/UInt8.h>
 
 namespace social_navigation_layers
 {
@@ -39,6 +40,15 @@ protected:
   boost::recursive_mutex lock_;
   bool first_time_;
   double last_min_x_, last_min_y_, last_max_x_, last_max_y_;
+
+  double robot_position_x_, robot_position_y_;
+
+  unsigned int rx_, ry_;
+
+  bool active_layer_;
+  bool publish_costmap_value_;
+
+  ros::Publisher costmap_current_value_pub_;
 };
 }  // namespace social_navigation_layers
 

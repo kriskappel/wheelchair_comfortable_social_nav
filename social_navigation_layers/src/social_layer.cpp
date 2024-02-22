@@ -20,6 +20,12 @@ void SocialLayer::onInitialize()
   current_ = true;
   first_time_ = true;
   people_sub_ = nh.subscribe("/people", 1, &SocialLayer::peopleCallback, this);
+
+
+  nh.param("activate_layer", active_layer_, true);
+  nh.param("return_current_costmap_value", publish_costmap_value_, true);
+  if(publish_costmap_value_)
+    costmap_current_value_pub_ = nh.advertise<std_msgs::UInt8>("current_value", 1000);
 }
 
 void SocialLayer::peopleCallback(const people_msgs::People& people)
@@ -32,6 +38,8 @@ void SocialLayer::peopleCallback(const people_msgs::People& people)
 void SocialLayer::updateBounds(double origin_x, double origin_y, double origin_z, double* min_x, double* min_y,
                                double* max_x, double* max_y)
 {
+
+  std::cout<<origin_x<<" "<<origin_y<<" "<<std::endl;
   boost::recursive_mutex::scoped_lock lock(lock_);
 
   std::string global_frame = layered_costmap_->getGlobalFrameID();
@@ -103,5 +111,8 @@ void SocialLayer::updateBounds(double origin_x, double origin_y, double origin_z
     last_max_x_ = c;
     last_max_y_ = d;
   }
+  robot_position_x_ = origin_x;
+  robot_position_y_ = origin_y;
+
 }
 };  // namespace social_navigation_layers

@@ -71,6 +71,21 @@ void ProxemicLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, i
 
   std::list<people_msgs::Person>::iterator p_it;
   costmap_2d::Costmap2D* costmap = layered_costmap_->getCostmap();
+
+  unsigned char * costmap_aux = new unsigned char[costmap->getSizeInCellsX() * costmap->getSizeInCellsY()]; 
+
+  for (unsigned int j = 0; j < costmap->getSizeInCellsY(); j++)
+  {
+    for (unsigned int i = 0; i < costmap->getSizeInCellsX(); i++)
+    {
+      int index = costmap->getIndex(i, j);
+      if (costmap_aux[index] == costmap_2d::NO_INFORMATION || costmap_aux[index] == costmap_2d::FREE_SPACE || costmap_aux[index] == LETHAL_OBSTACLE)
+        continue;
+      else
+        costmap_aux[index] = 0;
+    }
+  }
+
   double res = costmap->getResolution();
 
   for (p_it = transformed_people_.begin(); p_it != transformed_people_.end(); ++p_it)
@@ -142,7 +157,7 @@ void ProxemicLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, i
         if (fabs(diff) < M_PI / 2)
           a = gaussian(x, y, cx, cy, amplitude_, covar_ * factor, covar_, angle);
         else
-          a = gaussian(x, y, cx, cy, amplitude_, covar_,       covar_, 0);
+          a = gaussian(x, y, cx, cy, amplitude_, covar_, covar_, 0);
 
         if (a < cutoff_)
           continue;
@@ -152,8 +167,28 @@ void ProxemicLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, i
         
         // costmap->setCost(i + dx, j + dy, std::max(cvalue, old_cost));
         costmap->setCost(i + dx, j + dy, cvalue);
+        costmap_aux[costmap->getIndex(i + dx, j + dy)] = cvalue;
       }
     }
+  }
+
+  costmap->worldToMap(robot_position_x_, robot_position_y_, rx_, ry_);
+
+  // std::cout<<"update costs "<< publish_costmap_value_;
+
+  if(publish_costmap_value_)
+  {
+
+    ROS_INFO("social layer robot x y %f %f %u %u", robot_position_x_, robot_position_y_, rx_, ry_);
+    ROS_INFO("social layer cells size x y %u %u origin x y %f %f", costmap->getSizeInCellsX(), costmap->getSizeInCellsY(), costmap->getOriginX(), costmap->getOriginY());
+    // std::cout<<rx_<<" "<<ry_<<" ";
+    //<<static_cast<int>(costmap_aux[costmap->getIndex(rx_, ry_)])<<" ";
+    // std::cout<< static_cast<int>(costmap->getSizeInCellsY())<< " " << static_cast<int>(costmap->getSizeInCellsX())<<std::endl;
+  //   // std::cout<<rx_<<" "<<ry_<<" "<< costmap->getCost(rx_, ry_)<<std::endl;
+    std_msgs::UInt8 robot_cell_cost;
+    robot_cell_cost.data = static_cast<uint8_t>(costmap_aux[costmap->getIndex(rx_, ry_)]); //convert uchar to uint
+    
+    costmap_current_value_pub_.publish(robot_cell_cost);
   }
 }
 
