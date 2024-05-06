@@ -8,7 +8,8 @@ global_costmap:
  
   plugins:
     - {name: static_layer, type: "costmap_2d::StaticLayer"}
-    - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
+    - {name: comfort_layer, type: "comfort_layer::ComfortLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+    - {name: social_navigation_layer, type: "social_navigation_layers::ProxemicLayer"}
 
     

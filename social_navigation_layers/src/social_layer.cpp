@@ -38,8 +38,6 @@ void SocialLayer::peopleCallback(const people_msgs::People& people)
 void SocialLayer::updateBounds(double origin_x, double origin_y, double origin_z, double* min_x, double* min_y,
                                double* max_x, double* max_y)
 {
-
-  std::cout<<origin_x<<" "<<origin_y<<" "<<std::endl;
   boost::recursive_mutex::scoped_lock lock(lock_);
 
   std::string global_frame = layered_costmap_->getGlobalFrameID();
