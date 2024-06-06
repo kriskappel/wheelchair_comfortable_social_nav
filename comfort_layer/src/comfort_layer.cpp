@@ -1138,11 +1138,18 @@ std::vector<std::pair<cv::Vec4i, cv::Vec4i>> ComfortLayer::findParallelLines(uns
                         // Check if the distance is within the threshold
                         if(std::abs(pt1_1.x - pt1_2.x) < maxDistanceThreshold && std::abs(pt1_1.x - pt1_2.x) > minDistanceThreshold)
                         {
-                          lines[i][1] = 0;
-                          lines[i][3] = height - 1;
-
-                          lines[j][1] = 0;
-                          lines[j][3] = height - 1; 
+                          
+                          //sets both the lines to the size of the smallest line
+                          if(std::abs(lines[i][1]-lines[i][3]) < std::abs(lines[j][1]-lines[j][3]))
+                          {
+                            lines[j][1] = lines[i][1];
+                            lines[j][3] = lines[i][3];
+                          }
+                          else
+                          {
+                            lines[i][1] = lines[j][1];
+                            lines[i][3] = lines[j][3];
+                          }
 
                           parallelPairs.emplace_back(lines[i], lines[j]);
                           ROS_INFO("distance %f \n", distance);
@@ -1156,11 +1163,17 @@ std::vector<std::pair<cv::Vec4i, cv::Vec4i>> ComfortLayer::findParallelLines(uns
                         // Check if the distance is within the threshold
                         if(std::abs(pt1_1.y - pt1_2.y) < maxDistanceThreshold && std::abs(pt1_1.y - pt1_2.y) > minDistanceThreshold)
                         {
-                          lines[i][0] = 0;
-                          lines[i][2] = width - 1;
-
-                          lines[j][0] = 0;
-                          lines[j][2] = width - 1;
+                          //sets both the lines to the size of the smallest line
+                          if(std::abs(lines[i][0]-lines[i][2]) < std::abs(lines[j][0]-lines[j][2]))
+                          {
+                            lines[j][0] = lines[i][0];
+                            lines[j][2] = lines[i][2];
+                          }
+                          else
+                          {
+                            lines[i][0] = lines[j][0];
+                            lines[i][2] = lines[j][2];
+                          }
 
                           parallelPairs.emplace_back(lines[i], lines[j]);
                           ROS_INFO("distance %f \n", distance);
