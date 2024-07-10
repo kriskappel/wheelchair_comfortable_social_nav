@@ -570,31 +570,64 @@ void ComfortLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
       cv::Vec4i line1 = pp.first;
       cv::Vec4i line2 = pp.second;
 
-      // std::cout << "Line 1: (" << line1[0] << ", " << line1[1] << ") - (" << line1[2] << ", " << line1[3] << ")" << std::endl;
-      // std::cout << "Line 2: (" << line2[0] << ", " << line2[1] << ") - (" << line2[2] << ", " << line2[3] << ")" << std::endl;
-      
+      std::cout << "Line 1: (" << line1[0] << ", " << line1[1] << ") - (" << line1[2] << ", " << line1[3] << ")" << std::endl;
+      std::cout << "Line 2: (" << line2[0] << ", " << line2[1] << ") - (" << line2[2] << ", " << line2[3] << ")" << std::endl;
+
       costmap_2d::MapLocation maploc;
 
-      maploc.x = line1[0] + min_i;
-      maploc.y = line1[1] + min_j;  
-      map_polygon.push_back(maploc);
 
-      // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+      //true case lines are verticals, false otherwise. 
+      //need only to test one line case both are vertical or horizontal
+      if(abs(line1[1] - line1[3]) < abs(line1[0] - line1[2])) 
+      {
 
-      maploc.x = line1[2] + min_i;
-      maploc.y = line1[3] + min_j;  
-      map_polygon.push_back(maploc);
-      // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+         ROS_INFO("vertical");
+        maploc.x = line1[0] + min_i;
+        maploc.y = line1[1] + min_j;  
+        map_polygon.push_back(maploc);
 
-      maploc.x = line2[0] + min_i;
-      maploc.y = line2[1] + min_j;  
-      map_polygon.push_back(maploc);
-      // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+        // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
 
-      maploc.x = line2[2] + min_i;
-      maploc.y = line2[3] + min_j;  
-      map_polygon.push_back(maploc);
-      // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+        maploc.x = line1[2] + min_i;
+        maploc.y = line1[3] + min_j;  
+        map_polygon.push_back(maploc);
+        // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+
+        maploc.x = line2[0] + min_i;
+        maploc.y = line2[1] + min_j;  
+        map_polygon.push_back(maploc);
+        // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+
+        maploc.x = line2[2] + min_i;
+        maploc.y = line2[3] + min_j;  
+        map_polygon.push_back(maploc);
+        // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+      }
+      else
+      {
+         ROS_INFO("horizontal");
+        maploc.x = line1[0] + min_i;
+        maploc.y = line1[1] + min_j;  
+        map_polygon.push_back(maploc);
+
+        // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+
+        maploc.x = line2[0] + min_i;
+        maploc.y = line2[1] + min_j;  
+        map_polygon.push_back(maploc);
+        // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+
+        maploc.x = line1[2] + min_i;
+        maploc.y = line1[3] + min_j;  
+        map_polygon.push_back(maploc);
+        // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+
+
+        maploc.x = line2[2] + min_i;
+        maploc.y = line2[3] + min_j;  
+        map_polygon.push_back(maploc);
+        // std::cout << "maploc " <<maploc.x<< " " <<maploc.y<<"\n";
+      }
       
 
       convexFillCells(map_polygon, polygon_cells);
@@ -602,18 +635,39 @@ void ComfortLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
       for (unsigned int i = 0; i < polygon_cells.size(); ++i)
       {
         unsigned int index = getIndex(polygon_cells[i].x, polygon_cells[i].y);
+        unsigned int  print_map_x;
+        unsigned int  print_map_y; 
+        indexToCells(index, print_map_x, print_map_y);
+        double print_world_x;
+        double print_world_y;
+        mapToWorld(print_map_x, print_map_y, print_world_x, print_world_y);
+        
 
         double pos_coor = positionInCorridor(cv::Point(line1[0] + min_i, line1[1]+ min_j), cv::Point(line1[2]+ min_i, line1[3]+ min_j), 
           cv::Point(line2[0]+ min_i, line2[1]+ min_j), cv::Point(line2[2]+ min_i, line2[3]+ min_j)  , polygon_cells[i].x, polygon_cells[i].y);  
 
         double comfort = calculateComfortFunction(pos_coor);
 
+        if(print_world_x < -9.1 && print_world_x > -9.15 )
+        {
+          ROS_INFO("pos x %f y %f comfort %f", print_world_x, print_world_y, comfort);
+
+        }
+
         if (master_array[index] < LETHAL_OBSTACLE)
         {
           master_array[index] = mapComfortToCost(comfort);
+
           // saved_map_[index] = master_array[index];
+          // unsigned int  print_map_x;
+          // unsigned int  print_map_y; 
+          // indexToCells(index, print_map_x, print_map_y);
+          // double print_world_x;
+          // double print_world_y;
+          // mapToWorld(print_map_x, print_map_y, print_world_x, print_world_y);
+          // ROS_INFO("comfort func %d positionInCorridor %f comfort %f x %f y %f", mapComfortToCost(comfort), pos_coor, comfort, print_world_x, print_world_y);
           // ROS_INFO("comfort func %d positionInCorridor %f comfort %f", mapComfortToCost(comfort), pos_coor, comfort);
-          // ROS_INFO("comfort func %d positionInCorridor %f comfort %f", mapComfortToCost(comfort), pos_coor, comfort);
+          // if(mapComfortToCost(comfort) > )
           // std::cout <<(int)master_array[index]<< " ";
         }
         // costmap_[index] = 200;
@@ -987,14 +1041,17 @@ unsigned char ComfortLayer::mapComfortToCost(double value)
   if (value < 0 || value > 0.605) {
     // Handle out-of-range values
     // You can customize the behavior here, like throwing an exception or returning a default value
+    ROS_INFO("value %f ", value);
     return -1; // For example, returning -1 as an error indicator
   }
 
   // Calculate the corresponding int value
   // ROS_INFO("%f ", (1 - value / 0.605) * 254);
-  unsigned char result = static_cast<unsigned char>((1 - value / 0.605) * 253);
+  unsigned char result = static_cast<unsigned char>((1 - value / 0.605) * 252);
   // if (result > 254)
   //   result = 254;
+  if ((int) result > 252)
+    ROS_INFO("value %d ", result);
   return result;
 }
 
@@ -1061,11 +1118,11 @@ std::vector<std::pair<cv::Vec4i, cv::Vec4i>> ComfortLayer::findParallelLines(uns
 
     double angleThreshold = CV_PI / 36; // 5 degrees threshold for diagonal lines
     double minDistanceThreshold = 3.0;   //3.0; // Set your desired threshold value here
-    double maxDistanceThreshold = 50.0; //50.0;
+    double maxDistanceThreshold = 100.0; //50.0;
     double inclinationThreshold = 6.0;   //6.0;
-    int maxLineGap = 2;
-    int minLineLength = 15;
-    int minNumPointsToLine = 25;
+    int maxLineGap = 6; //2
+    int minLineLength = 15; //15
+    int minNumPointsToLine = 25; //25
     // ROS_INFO("testing2");
     // cv::Mat thresholdImage;
     // cv::threshold(binaryImage, thresholdImage, 0, 255, cv::THRESH_BINARY);
@@ -1116,8 +1173,8 @@ std::vector<std::pair<cv::Vec4i, cv::Vec4i>> ComfortLayer::findParallelLines(uns
               // if ( (abs(angle2degrees) < 10 || abs(angle2degrees - 180) < 10) || (abs(angle2degrees - 90) < 10 || abs(angle2degrees + 90) < 10) )
               // {
 
-                if(parallelPairs.size() > 4)
-                  return parallelPairs;
+                // if(parallelPairs.size() > 4)
+                //   return parallelPairs;
                 //diff1x e diff2x é a diferença dos dois pontos da mesma reta em x
                 //diff1y e diff2y é a diferença dos dois pontos da mesma reta em y
                 if((diff1x < inclinationThreshold  && diff2x < inclinationThreshold ) || (diff1y < inclinationThreshold && diff2y < inclinationThreshold )) 
