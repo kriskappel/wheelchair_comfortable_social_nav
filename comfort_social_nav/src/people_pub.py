@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 from gazebo_msgs.msg import ModelState, ModelStates
@@ -21,9 +21,9 @@ def model_states_callback(data):     # Callback function to handle /gazebo/model
             # model_twist = data.twist[i]
 
             # print("Model Name: {}".format(model_name))
-            print("Model Pose: {}".format(model_pos))
+            # print("Model Pose: {}".format(model_pos))
             # print("Model Twist: {}".format(model_twist))
-            print("\n")
+            # print("\n")
 
             person = Person()
             person.name = model_name

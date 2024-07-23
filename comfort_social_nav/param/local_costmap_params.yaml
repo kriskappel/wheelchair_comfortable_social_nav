@@ -2,8 +2,8 @@ local_costmap:
   global_frame: odom
   robot_base_frame: base_footprint
 
-  update_frequency: 10.0
-  publish_frequency: 10.0
+  update_frequency: 5.0 #10.0
+  publish_frequency: 5.0 #10.0
   transform_tolerance: 0.5  
   
   rolling_window: true
@@ -13,4 +13,6 @@ local_costmap:
   
   plugins:
     - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
+    - {name: vision_layer, type: "vision_layer::VisionLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+    - {name: social_navigation_layer, type: "social_navigation_layers::ProxemicLayer"}

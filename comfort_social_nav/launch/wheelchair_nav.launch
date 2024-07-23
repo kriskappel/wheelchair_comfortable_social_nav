@@ -37,5 +37,10 @@
 
   <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find comfort_social_nav)/config/comfort_social_nav.rviz"/>
 
+  <node pkg="comfort_social_nav" type="people_pub.py" name="people_pub"/>
+
+  <!--<node pkg ="rosbag" type="record" name="record_run" args="record -O /home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/bags/test2.bag -a"/>-->
+
+
 
 </launch>

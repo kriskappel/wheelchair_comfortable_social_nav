@@ -1,4 +1,4 @@
-image: /home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/maps/map_corridor.pgm
+image: /home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/maps/map_corridor_edited__.pgm
 resolution: 0.050000
 origin: [-21.200000, -10.000000, 0.000000]
 negate: 0
