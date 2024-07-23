@@ -336,7 +336,7 @@ namespace vision_layer
 
       unsigned int visibility_window_size = 30;
 
-      int cell_raytrace_range = 15;
+      int cell_raytrace_range = 20;
 
       cost = 200;
 
@@ -387,7 +387,7 @@ namespace vision_layer
       }
       float result = static_cast<float>(visible_cells) / (visible_cells + invisible_cells);
 
-      result = (1.0 - result) * 252.0;
+      result = (1.0 - result) * 600.0; //*252.0
 
       if(result > 252)
         result = 252;

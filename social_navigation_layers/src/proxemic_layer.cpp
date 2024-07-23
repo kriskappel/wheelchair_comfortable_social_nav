@@ -179,8 +179,8 @@ void ProxemicLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, i
   if(publish_costmap_value_)
   {
 
-    ROS_INFO("social layer robot x y %f %f %u %u", robot_position_x_, robot_position_y_, rx_, ry_);
-    ROS_INFO("social layer cells size x y %u %u origin x y %f %f", costmap->getSizeInCellsX(), costmap->getSizeInCellsY(), costmap->getOriginX(), costmap->getOriginY());
+    // ROS_INFO("social layer robot x y %f %f %u %u", robot_position_x_, robot_position_y_, rx_, ry_);
+    // ROS_INFO("social layer cells size x y %u %u origin x y %f %f", costmap->getSizeInCellsX(), costmap->getSizeInCellsY(), costmap->getOriginX(), costmap->getOriginY());
     // std::cout<<rx_<<" "<<ry_<<" ";
     //<<static_cast<int>(costmap_aux[costmap->getIndex(rx_, ry_)])<<" ";
     // std::cout<< static_cast<int>(costmap->getSizeInCellsY())<< " " << static_cast<int>(costmap->getSizeInCellsX())<<std::endl;

@@ -354,7 +354,8 @@ void ComfortLayer::pointCloud2Callback(const sensor_msgs::PointCloud2ConstPtr& m
 void ComfortLayer::updateBounds(double robot_x, double robot_y, double robot_yaw, double* min_x,
                                           double* min_y, double* max_x, double* max_y)
 {
-
+  // std::cout<<*max_y<<std::endl;
+  // ROS_INFO("comfort %f %f %f %f %f %f", robot_x, robot_y, *min_x, *min_y, *max_x, *max_y);
   if (rolling_window_)
   {
     // ROS_WARN("rolling_window");
@@ -364,7 +365,7 @@ void ComfortLayer::updateBounds(double robot_x, double robot_y, double robot_yaw
   useExtraBounds(min_x, min_y, max_x, max_y);
 
   // ROS_WARN("The origin for the sensor at (%.2f, %.2f) is out of map bounds. So, the costmap cannot raytrace for it.", robot_x, robot_y);
-  // ROS_INFO("comfort %f %f %f %f", robot_x, robot_y, origin_x_, origin_y_);
+  
 
   // bool current = true;
   // std::vector<Observation> observations, clearing_observations;
@@ -543,10 +544,10 @@ void ComfortLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
     ROS_INFO("FIRST RUN");
     first_run_ = false;
 
-    int height = (max_j - min_j);
-    int width = (max_i - min_i);
+    height_ = (max_j - min_j);
+    width_ = (max_i - min_i);
    
-    unsigned char * saved_map_ = new unsigned char[height * width];
+    // unsigned char * saved_map_ = new unsigned char[height * width];
 
 
     translate_array_ = new unsigned int[(max_i - min_i) * (max_j - min_j)];
@@ -570,8 +571,8 @@ void ComfortLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
       cv::Vec4i line1 = pp.first;
       cv::Vec4i line2 = pp.second;
 
-      std::cout << "Line 1: (" << line1[0] << ", " << line1[1] << ") - (" << line1[2] << ", " << line1[3] << ")" << std::endl;
-      std::cout << "Line 2: (" << line2[0] << ", " << line2[1] << ") - (" << line2[2] << ", " << line2[3] << ")" << std::endl;
+      // std::cout << "Line 1: (" << line1[0] << ", " << line1[1] << ") - (" << line1[2] << ", " << line1[3] << ")" << std::endl;
+      // std::cout << "Line 2: (" << line2[0] << ", " << line2[1] << ") - (" << line2[2] << ", " << line2[3] << ")" << std::endl;
 
       costmap_2d::MapLocation maploc;
 
@@ -581,7 +582,7 @@ void ComfortLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
       if(abs(line1[1] - line1[3]) < abs(line1[0] - line1[2])) 
       {
 
-         ROS_INFO("vertical");
+         // ROS_INFO("vertical");
         maploc.x = line1[0] + min_i;
         maploc.y = line1[1] + min_j;  
         map_polygon.push_back(maploc);
@@ -605,7 +606,7 @@ void ComfortLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
       }
       else
       {
-         ROS_INFO("horizontal");
+         // ROS_INFO("horizontal");
         maploc.x = line1[0] + min_i;
         maploc.y = line1[1] + min_j;  
         map_polygon.push_back(maploc);
@@ -648,17 +649,11 @@ void ComfortLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
 
         double comfort = calculateComfortFunction(pos_coor);
 
-        if(print_world_x < -9.1 && print_world_x > -9.15 )
-        {
-          ROS_INFO("pos x %f y %f comfort %f", print_world_x, print_world_y, comfort);
-
-        }
-
         if (master_array[index] < LETHAL_OBSTACLE)
         {
           master_array[index] = mapComfortToCost(comfort);
 
-          // saved_map_[index] = master_array[index];
+          // saved_map_[index] = mapComfortToCost(comfort);
           // unsigned int  print_map_x;
           // unsigned int  print_map_y; 
           // indexToCells(index, print_map_x, print_map_y);
@@ -673,13 +668,43 @@ void ComfortLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
         // costmap_[index] = 200;
         // ;
       }
-
+      saveMapCopy(master_array, height_ * width_);
       map_polygon.clear();
       polygon_cells.clear();
-      
-      ROS_INFO("ending");
+      // for (int j = 0; j < 384; j++) 
+      // {
+      //   for (int i = 0; i < 384; i++) 
+      //   {
+      //     // master_array[getIndex(i,j)] = saved_map_[getIndex(i,j)];
+      //     // master_array[getIndex(i,j)] = ;
+      //     ROS_INFO("%d",  saved_map_[getIndex(i, j)]);
+      //     // std::cout<<saved_map_[getIndex(i,j)];
+          
+      //   }
+        
+      // }
+      // ROS_INFO("ending");
     }
+    
   }
+
+  if(!first_run_)
+  {
+    // ROS_INFO("hello?");
+    // for (int j = 0; j < 384; j++) 
+    // {
+    //   for (int i = 0; i < 384; i++) 
+    //   {
+    //     master_array[getIndex(i,j)] = saved_map_[getIndex(i,j)];
+    //     // master_array[getIndex(i,j)] = ;
+    //     // ROS_INFO("%d",  saved_map_[getIndex(i, j)]);
+    //     // std::cout<<saved_map_[getIndex(i,j)];
+        
+    //   }
+    // }
+
+    std::memcpy(master_array, saved_map_, height_ * width_);
+  }  
 
   // unsigned int ix, jx;
   // ix = 55;
@@ -814,6 +839,13 @@ void ComfortLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
 
   // }
 }
+
+void ComfortLayer::saveMapCopy(unsigned char* original_map, size_t size) {
+  size_map_ = size;
+  saved_map_ = new unsigned char[size_map_];
+  std::memcpy(saved_map_, original_map, size_map_);
+}
+
 
 void ComfortLayer::addStaticObservation(costmap_2d::Observation& obs, bool marking, bool clearing)
 {
@@ -1209,7 +1241,7 @@ std::vector<std::pair<cv::Vec4i, cv::Vec4i>> ComfortLayer::findParallelLines(uns
                           }
 
                           parallelPairs.emplace_back(lines[i], lines[j]);
-                          ROS_INFO("distance %f \n", distance);
+                          // ROS_INFO("distance %f \n", distance);
                           // delete costmap_aux;
                           
                           // return parallelPairs;
@@ -1233,7 +1265,7 @@ std::vector<std::pair<cv::Vec4i, cv::Vec4i>> ComfortLayer::findParallelLines(uns
                           }
 
                           parallelPairs.emplace_back(lines[i], lines[j]);
-                          ROS_INFO("distance %f \n", distance);
+                          // ROS_INFO("distance %f \n", distance);
                           // delete costmap_aux;
 
                           // return parallelPairs;

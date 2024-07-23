@@ -134,6 +134,9 @@ public:
 
   std::vector<std::pair<cv::Vec4i, cv::Vec4i>> findParallelLines(unsigned char* data, int min_i, int min_j, int max_i, int max_j);
 
+   // Function to save an map copy to the class variable
+  void saveMapCopy(unsigned char* original_map, size_t size);
+
 
 
 protected:
@@ -208,7 +211,10 @@ protected:
   ros::Publisher costmap_current_value_pub_;
 
   unsigned char * saved_map_;
+  size_t size_map_;
 
+  int height_;
+  int width_;
 
 private:
   void reconfigureCB(costmap_2d::ObstaclePluginConfig &config, uint32_t level);
