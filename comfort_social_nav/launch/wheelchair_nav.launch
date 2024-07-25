@@ -1,5 +1,6 @@
 <launch>
   
+  <arg name="log_type" default="log"/>
   <!-- Map File -->
   <arg name="map_file" default="$(find comfort_social_nav)/maps/map_corridor.yaml"/>
   <!-- Initial Pose and Goal Publisher -->
@@ -14,7 +15,7 @@
 
   <!-- Map Server --> 
   <!-- Publish: /map, /map_metadata -->
-  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)" />
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)" output="$(arg log_type)" />
 	
   <!-- Add AMCL example for differential drive robots for Localization -->
   <!-- Subscribe: /scan, /tf, /initialpose, /map -->
@@ -24,7 +25,7 @@
   <!-- Move Base Node -->
   <!-- Subscribe: /move_base_simple/goal -->
   <!-- Publish: /cmd_vel -->
-  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="$(arg log_type)">
     <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
     <rosparam file="$(find comfort_social_nav)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find comfort_social_nav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
@@ -37,7 +38,7 @@
 
   <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find comfort_social_nav)/config/comfort_social_nav.rviz"/>
 
-  <node pkg="comfort_social_nav" type="people_pub.py" name="people_pub"/>
+  <node pkg="comfort_social_nav" type="people_pub.py" name="people_pub" output="$(arg log_type)"/>
 
   <!--<node pkg ="rosbag" type="record" name="record_run" args="record -O /home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/bags/test2.bag -a"/>-->
 

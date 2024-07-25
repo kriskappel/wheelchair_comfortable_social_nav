@@ -9,6 +9,9 @@
 
   <arg name="world_name" default="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
 
+
+  <arg name="log_type" default="log"/>
+
   <!-- set command arguments -->
   <arg unless="$(arg paused)" name="command_arg1" value=""/>
   <arg     if="$(arg paused)" name="command_arg1" value="-u"/>
@@ -18,12 +21,12 @@
   <arg     if="$(arg debug)" name="script_type" value="debug"/>
 
   <!-- start gazebo server-->
-  <node name="gazebo" pkg="gazebo_ros" type="$(arg script_type)" respawn="false" output="screen"
+  <node name="gazebo" pkg="gazebo_ros" type="$(arg script_type)" respawn="false" output="$(arg log_type)"
 	args="$(arg world_name)" />
 	
   <!-- start gazebo client -->
   <group if="$(arg gui)">
-    <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen"/>
+    <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="$(arg log_type)"/>
   </group>
 
 </launch>

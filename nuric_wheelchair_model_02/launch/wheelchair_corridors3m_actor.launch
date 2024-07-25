@@ -10,6 +10,7 @@
 	
 	<arg name="rvizconfig" default="$(find nuric_wheelchair_model_02)/config/wheelchair_urdf.rviz" />
 
+  <arg name="log_type" default="log"/>
 
 	<param command="$(find xacro)/xacro $(arg model)" name="robot_description"/>
 	<!-- push robot_description to factory and spawn robot in gazebo -->
@@ -21,10 +22,10 @@
 		-x $(arg x_pos) 
 		-y $(arg y_pos) 
 		-z $(arg z_pos)"
-	  respawn="false" output="screen" />
+	  respawn="false" output="$(arg log_type)" />
 
 	<!-- start robot state publisher -->
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" respawn="false" output="screen" />
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" respawn="false" output="$(arg log_type)" />
 
 	<param name="use_gui" value="false"/>
 	<!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" /> -->
@@ -33,9 +34,10 @@
   	<arg name="world_name" value="$(find comfort_social_nav)/worlds/corridors_3m_actor.world"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
-    <arg name="gui" value="true"/>
+    <arg name="gui" value="false"/>
     <arg name="headless" value="false"/>
     <arg name="debug" value="false"/>
+    <arg name="output" value="$(arg log_type)"/>
   </include> 
 
 </launch>
