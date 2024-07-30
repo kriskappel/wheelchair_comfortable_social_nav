@@ -1,6 +1,6 @@
 <launch>
   
-  <arg name="log_type" default="log"/>
+  <arg name="log_type" default="screen"/>
   <!-- Map File -->
   <arg name="map_file" default="$(find comfort_social_nav)/maps/map_corridor.yaml"/>
   <!-- Initial Pose and Goal Publisher -->

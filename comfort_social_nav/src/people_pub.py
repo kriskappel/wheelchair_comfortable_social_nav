@@ -4,7 +4,8 @@ import rospy
 from gazebo_msgs.msg import ModelState, ModelStates
 from people_msgs.msg import People, Person
 from std_msgs.msg import Header
-
+from tf.transformations import euler_from_quaternion, quaternion_from_euler
+from math import cos, sin
 
 def model_states_callback(data):     # Callback function to handle /gazebo/modelstates messages
 
@@ -18,6 +19,9 @@ def model_states_callback(data):     # Callback function to handle /gazebo/model
         model_name = data.name[i]
         if model_name == "person1":
             model_pos = data.pose[i]
+            (roll,pitch,yaw) = euler_from_quaternion([model_pos.orientation.x, model_pos.orientation.y, model_pos.orientation.z, model_pos.orientation.w])
+            mark_x = model_pos.position.x + sin(yaw)/4;
+            mark_y = model_pos.position.y + cos(yaw)/4;
             # model_twist = data.twist[i]
 
             # print("Model Name: {}".format(model_name))
@@ -28,6 +32,8 @@ def model_states_callback(data):     # Callback function to handle /gazebo/model
             person = Person()
             person.name = model_name
             person.position = model_pos.position
+            person.position.x=mark_x
+            person.position.y=mark_y
 
             # person.velocity.x = model_pos.orientation.x
             # person.velocity.y = model_pos.orientation.y

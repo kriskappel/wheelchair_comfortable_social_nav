@@ -302,8 +302,8 @@ namespace vision_layer
       }
       
       // ROS_INFO("end vision");
-      // if(active_layer_)
-      updateWithAddition(master_grid, min_i, min_j, max_i, max_j);
+      if(active_layer_)
+        updateWithAddition(master_grid, min_i, min_j, max_i, max_j);
       // for (int t = min_j; t < max_j; t++) 
       // {
       //   for (int f = min_i; f < max_i; f++) 

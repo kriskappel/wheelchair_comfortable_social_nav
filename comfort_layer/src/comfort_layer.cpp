@@ -442,13 +442,13 @@ void ComfortLayer::updateBounds(double robot_x, double robot_y, double robot_yaw
   // ROS_INFO("comfort layer robot x y %f %f %u %u", robot_x, robot_y, rx_, ry_);
   // ROS_INFO("comfort layer cells size x y %u %u origin x y %f %f", getSizeInCellsX(), getSizeInCellsY(), getOriginX(), getOriginY());
 
-  if(publish_costmap_value_)
-  {
-    std_msgs::UInt8 robot_cell_cost;;
-    robot_cell_cost.data = static_cast<uint8_t>(costmap_[getIndex(rx_, ry_)]); //convert uint to uchar
+  // if(publish_costmap_value_)
+  // {
+  //   std_msgs::UInt8 robot_cell_cost;;
+  //   robot_cell_cost.data = static_cast<uint8_t>(costmap_[getIndex(rx_, ry_)]); //convert uint to uchar
     
-    costmap_current_value_pub_.publish(robot_cell_cost);
-  }
+  //   costmap_current_value_pub_.publish(robot_cell_cost);
+  // }
   // if (first_run_ == 1)
   // {
   //   // printCostmap(*min_x, *min_y, *max_x, *max_y);
@@ -702,8 +702,16 @@ void ComfortLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
         
     //   }
     // }
+    if(publish_costmap_value_)
+    {
+      std_msgs::UInt8 robot_cell_cost;;
+      robot_cell_cost.data = static_cast<uint8_t>(saved_map_[getIndex(rx_, ry_)]); //convert uint to uchar
+      
+      costmap_current_value_pub_.publish(robot_cell_cost);
+    }
 
-    std::memcpy(master_array, saved_map_, height_ * width_);
+    if(active_layer_)
+      std::memcpy(master_array, saved_map_, height_ * width_);
   }  
 
   // unsigned int ix, jx;

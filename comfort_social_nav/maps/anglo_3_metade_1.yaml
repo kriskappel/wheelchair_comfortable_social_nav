@@ -1,0 +1,6 @@
+image: /home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/maps/anglo_3_metade_1.pgm
+resolution: 0.050000
+origin: [-1,-1, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196

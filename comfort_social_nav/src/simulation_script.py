@@ -114,7 +114,7 @@ if __name__ == '__main__':
 
 	bag_folder_name = "test"
 
-	pose_goal = Pose(Point(3.0, 8.0, 0.0), Quaternion(0.0, 0.0, 0.0, 1.0))
+	pose_goal = Pose(Point(1.0, -8.5, 0.0), Quaternion(0.0, 0.0, 0.0, -1.0)) #Corridor3m
 
 	sim_launch_path = "/home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/nuric_wheelchair_model_02/launch/wheelchair_corridors3m_actor.launch"
 	nav_launch_path = "/home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/launch/wheelchair_nav.launch"

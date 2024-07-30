@@ -16,10 +16,11 @@ comfort_layer:
   # map_type: costmap
   observation_sources: scan
   scan: {sensor_frame: laser_joint, data_type: LaserScan, topic: scan, marking: true, clearing: true}
+  activate_layer: false
 
-# vision_layer:
-#   inflation_radius: 1.0
-#   cost_scaling_factor: 3.0
+vision_layer:
+  activate_layer: false
 
-# social_navigation_layer:
+social_navigation_layer:
+  activate_layer: false
 #   amplitude: 17.0

@@ -166,7 +166,10 @@ void ProxemicLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, i
         	cvalue = cvalue+100;
         
         // costmap->setCost(i + dx, j + dy, std::max(cvalue, old_cost));
-        costmap->setCost(i + dx, j + dy, cvalue);
+        if(active_layer_)
+        {
+          costmap->setCost(i + dx, j + dy, cvalue);
+        }
         costmap_aux[costmap->getIndex(i + dx, j + dy)] = cvalue;
       }
     }
