@@ -856,11 +856,11 @@
         <trajectory id="0" type="walking">
           <waypoint>
             <time>0</time>
-            <pose>7.5 0.3 0 0 0 0 -1.57</pose>
+            <pose>7.5 0.3 0 0 0 0</pose>
           </waypoint>
           <waypoint>
             <time>2</time>
-            <pose>7.5 0.3 0 0 0 0 -1.57</pose>
+            <pose>7.5 0.3 0 0 0 0</pose>
           </waypoint>
           
         </trajectory>

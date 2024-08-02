@@ -8,6 +8,10 @@
   <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d /home/automaticaddison/catkin_ws/src/jetson_nano_bot/navigation_data_pub/maps/floorplan4.rviz">
   </node>  -->
 
+  <arg name="initial_pose_x" default="0.0"/>
+  <arg name="initial_pose_y" default="0.0"/>
+  <arg name="initial_pose_a" default="0.0"/>
+
   <!-- Subscribe: /initialpose, /move_base_simple/goal -->
   <!-- Publish: /initial_2d, /goal_2d --> 
   <!-- <node pkg="localization_data_pub" type="rviz_click_to_2d" name="rviz_click_to_2d">
@@ -20,7 +24,11 @@
   <!-- Add AMCL example for differential drive robots for Localization -->
   <!-- Subscribe: /scan, /tf, /initialpose, /map -->
   <!-- Publish: /amcl_pose, /particlecloud, /tf -->
-  <include file="$(find comfort_social_nav)/launch/amcl.launch"/>
+  <include file="$(find comfort_social_nav)/launch/amcl.launch">
+    <arg name="initial_pose_x"   value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y"   value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a"   value="$(arg initial_pose_a)"/>
+  </include>
 	
   <!-- Move Base Node -->
   <!-- Subscribe: /move_base_simple/goal -->
@@ -42,6 +50,6 @@
 
   <!--<node pkg ="rosbag" type="record" name="record_run" args="record -O /home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/bags/test2.bag -a"/>-->
 
-
+  <include file="$(find comfort_social_nav)/launch/trajectory.launch"/>
 
 </launch>

@@ -22,5 +22,5 @@ vision_layer:
   activate_layer: false
 
 social_navigation_layer:
-  activate_layer: false
+  activate_layer: true
 #   amplitude: 17.0
