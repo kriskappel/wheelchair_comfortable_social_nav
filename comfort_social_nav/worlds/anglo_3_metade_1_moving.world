@@ -13155,13 +13155,32 @@
         <trajectory id="0" type="walking" tension="0.8">
           <waypoint>
             <time>0</time>
-            <pose>16.6 11.7 0 0 0 0</pose>
+            <pose>16.6 11.7 0 0 0 3.142</pose>
           </waypoint>
           <waypoint>
             <time>10</time>
+            <pose>12.6 11.7 0 0 0 3.142</pose>
+          </waypoint>
+          <waypoint>
+            <time>10.5</time>
+            <pose>12.6 11.7 0 0 0 1.57</pose>
+          </waypoint>
+          <waypoint>
+            <time>11.0</time>
+            <pose>12.6 11.7 0 0 0 0.0</pose>
+          </waypoint>
+          <waypoint>
+            <time>21.0</time>
             <pose>16.6 11.7 0 0 0 0</pose>
           </waypoint>
-          
+          <waypoint>
+            <time>21.5</time>
+            <pose>16.6 11.7 0 0 0 1.57</pose>
+          </waypoint>
+          <waypoint>
+            <time>22</time>
+            <pose>16.6 11.7 0 0 0 3.142</pose>
+          </waypoint>
           
         </trajectory>
       </script>
@@ -13180,11 +13199,11 @@
       <trajectory id="1" type="walking" tension="0.8">
         <waypoint>
           <time>0</time>
-          <pose>27.5 11.3 0 0 0 0</pose>
+          <pose>27.5 11.3 0 0 0 1.57</pose>
         </waypoint>
         <waypoint>
           <time>2</time>
-          <pose>27.5 11.3 0 0 0 0</pose>
+          <pose>27.5 11.3 0 0 0 1.57</pose>
         </waypoint>
         
       </trajectory>

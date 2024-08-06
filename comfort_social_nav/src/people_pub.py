@@ -31,19 +31,18 @@ def model_states_callback(data):     # Callback function to handle /gazebo/model
 
     for i in range(len(data.name)):
         model_name = data.name[i]
-        if model_name == "person1":
+        if "person" in model_name:
             model_pos = data.pose[i]
 
             # Check if the difference is less than 4 in x and y
             if abs(robot_pos.x - model_pos.position.x) < 4 and abs(robot_pos.y - model_pos.position.y) < 4:
                 person_near=True
                 (roll,pitch,yaw) = euler_from_quaternion([model_pos.orientation.x, model_pos.orientation.y, model_pos.orientation.z, model_pos.orientation.w])
-                mark_x = model_pos.position.x + sin(yaw)/4;
-                mark_y = model_pos.position.y + cos(yaw)/4;
-                # mark_x = model_pos.position.x + sin(yaw)/2 ;
-                # mark_y = model_pos.position.y + cos(yaw)/2 ; 
+                # mark_x = model_pos.position.x + sin(yaw)/4; 
+                # mark_y = model_pos.position.y + cos(yaw)/4 ;
+                mark_x = model_pos.position.x + sin(yaw)/2 ;
+                mark_y = model_pos.position.y + cos(yaw)/2 ; 
                 # model_twist = data.twist[i]
-
                 # print("Model Name: {}".format(model_name))
                 # print("Model Pose: {}".format(model_pos))
                 # print("Model Twist: {}".format(model_twist))

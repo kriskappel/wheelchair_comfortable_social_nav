@@ -128,12 +128,16 @@ if __name__ == '__main__':
 
 	num_runs = 50
 
-	bag_folder_name = "corridor_social_nav"
+	bag_folder_name = "anglo_comfort_social_nav"
 
-	pose_goal = Pose(Point(3.0, -8.5, 0.0), Quaternion(0.0, 0.0, 1.0, 0.0)) #Corridor3m
+	# pose_goal = Pose(Point(3.0, -8.5, 0.0), Quaternion(0.0, 0.0, 1.0, 0.0)) #Corridor3m
+	pose_goal = Pose(Point(32.0, -1.25, 0.0), Quaternion(0.0, 0.0, 0.0, 0.1)) #anglo
 
-	sim_launch_path = "/home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/nuric_wheelchair_model_02/launch/wheelchair_corridors3m_actor.launch"
-	nav_launch_path = "/home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/launch/wheelchair_nav.launch"
+	# sim_launch_path = "/home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/nuric_wheelchair_model_02/launch/wheelchair_corridors3m_actor.launch"
+	# nav_launch_path = "/home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/launch/wheelchair_nav.launch"
+
+	sim_launch_path = "/home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/nuric_wheelchair_model_02/launch/wheelchair_anglo_3_metade_1.launch"
+	nav_launch_path = "/home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/launch/wheelchair_nav_anglo.launch"
 
 	#---------------
 

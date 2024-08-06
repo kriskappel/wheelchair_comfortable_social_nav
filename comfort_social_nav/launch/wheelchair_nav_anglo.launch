@@ -1,6 +1,7 @@
 <launch>
   
   <arg name="log_type" default="log"/>
+  <arg name="use_rviz" default="true"/>
   <!-- Map File -->
   <arg name="map_file" default="$(find comfort_social_nav)/maps/anglo_3_metade_1.yaml"/>
   <!-- Initial Pose and Goal Publisher -->
@@ -44,8 +45,9 @@
     <rosparam file="$(find comfort_social_nav)/param/dwa_local_planner_params.yaml" command="load" />
   </node>
 
-  <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find comfort_social_nav)/config/comfort_social_nav.rviz"/>
-
+  <group if="$(arg use_rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find comfort_social_nav)/config/comfort_social_nav.rviz"/>
+  </group>
   <node pkg="comfort_social_nav" type="people_pub.py" name="people_pub" output="$(arg log_type)"/>
 
   <!--<node pkg ="rosbag" type="record" name="record_run" args="record -O /home/kriskappel/catkin_ws/src/wheelchair_comfortable_social_nav/comfort_social_nav/bags/test2.bag -a"/>-->

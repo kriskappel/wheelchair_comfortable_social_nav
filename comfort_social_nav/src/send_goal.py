@@ -43,7 +43,7 @@ def movebase_client():
     goal.target_pose.header.stamp = rospy.Time.now()
 
     # Set the goal position and orientation
-    goal.target_pose.pose = Pose(Point(-1.0, 8.0, 0.0), Quaternion(0.0, 0.0, 0.0, 1.0))  # Change these values to your desired goal
+    goal.target_pose.pose = Pose(Point(32.0, -1.25, 0.0), Quaternion(0.0, 0.0, 0.0, 1.0))  # Change these values to your desired goal
 
     # Send the goal
     rospy.loginfo("Sending goal")

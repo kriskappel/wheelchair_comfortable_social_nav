@@ -34,7 +34,7 @@
   	<arg name="world_name" value="$(find comfort_social_nav)/worlds/corridors_3m_actor.world"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
-    <arg name="gui" value="false"/>
+    <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
     <arg name="debug" value="false"/>
     <arg name="output" value="$(arg log_type)"/>

@@ -1,7 +1,7 @@
 <launch>
   
   <arg name="log_type" default="log"/>
-  <arg name="use_rviz" default="false"/>
+  <arg name="use_rviz" default="true"/>
   <!-- Map File -->
   <arg name="map_file" default="$(find comfort_social_nav)/maps/map_corridor.yaml"/>
   <!-- Initial Pose and Goal Publisher -->
